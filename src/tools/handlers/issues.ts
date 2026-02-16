@@ -17,7 +17,7 @@ import type {
   CreateCommentSchema,
 } from "../definitions/issues.js";
 
-// Shared issue formatter
+// Shared issue formatter — works with both Issue and IssueSearchResult
 async function formatIssue(issue: {
   id: string;
   identifier: string;
@@ -31,14 +31,14 @@ async function formatIssue(issue: {
   assignee: Promise<{ id: string; name: string } | null> | null;
   team: Promise<{ id: string; name: string; key: string }>;
   project: Promise<{ id: string; name: string } | null> | null;
-  labels: () => Promise<{ nodes: Array<{ id: string; name: string }> }>;
+  labels?: () => Promise<{ nodes: Array<{ id: string; name: string }> }>;
 }) {
   const [state, assignee, team, project, labels] = await Promise.all([
     issue.state,
     issue.assignee,
     issue.team,
     issue.project,
-    issue.labels(),
+    issue.labels ? issue.labels() : Promise.resolve({ nodes: [] }),
   ]);
 
   return {
@@ -168,8 +168,7 @@ export async function handleSearchIssues(params: z.infer<typeof SearchIssuesSche
 
     const hasFilter = Object.keys(filter).length > 0;
     const result = await rateLimited(() =>
-      linearClient.issueSearch({
-        query: params.query,
+      linearClient.searchIssues(params.query, {
         first: params.limit,
         ...(hasFilter && { filter }),
       })

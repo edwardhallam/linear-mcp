@@ -122,7 +122,7 @@ export async function resolveIssueId(identifier: string): Promise<string> {
 
   // Team key + number pattern (e.g., GEN-123)
   const result = await rateLimited(() =>
-    linearClient.issueSearch({ query: identifier, first: 1 })
+    linearClient.searchIssues(identifier, { first: 1 })
   );
   if (result.nodes.length === 0) {
     throw new Error(`Issue not found: "${identifier}". Verify the identifier format (e.g., "GEN-123").`);
