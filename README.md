@@ -92,7 +92,7 @@ src/
 Architecture patterns drawn from community Linear MCP servers:
 
 - [tacticlaunch/mcp-linear](https://github.com/tacticlaunch/mcp-linear) — separate definitions/handlers pattern
-- [iceener/linear-streamable](https://github.com/nicepkg/aide) — workspace metadata discovery tool, LLM-friendly errors
+- [iceener/linear-streamable-mcp-server](https://github.com/iceener/linear-streamable-mcp-server) — workspace metadata discovery tool, LLM-friendly errors
 - [jerhadf/linear-mcp-server](https://github.com/jerhadf/linear-mcp-server) — queue-based rate limiter
 
 ## License
